@@ -1,0 +1,441 @@
+pom.xml下添加依赖
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>cn.wf</groupId>
+    <artifactId>MyBatis2</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+        <!-- mysql驱动包 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.12</version>
+        </dependency>
+        <!-- junit测试包 -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+        </dependency>
+        <!--日志包-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.8.0-alpha2</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19</version>
+                <configuration>
+                    <includes>
+
+                        <include>**/*test*.java</include>   <!-- 两个星号**用来匹配任意路径，一个星号*用来获取除路径风格符外的0个或多个字符 -->
+                    </includes>
+                    <excludes>     <!-- 排除 -->
+                        <exclude>**/123TestCase.java</exclude>
+                    </excludes>
+                    <skip>false</skip>  <!-- 略过单元测试 -->
+                    <testFailureIgnore>true</testFailureIgnore> <!-- 当Maven 遇到一个测试失败，它默认的行为是停止当前的构建。 如果你希望继续构建项目，即使 Surefire 插件遇到了失败的单元测试，你就需要设置 Surefire 的testFailureIgnore 这个配置属性为 true -->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
+
+
+在resources下新建Configure.xml，配置数据库链接并映射User.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <typeAlias alias="User" type="com.mybatis.models.User" />
+    </typeAliases>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC" />
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver" />
+                <property name="url" value="jdbc:mysql://132.232.179.230:3306/User?useSSL=false&amp;serverTimezone=UTC" />
+                <property name="username" value="root" />
+                <property name="password" value="Wjp@1234" />
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <mapper resource="models/User.xml" />
+    </mappers>
+
+</configuration>
+
+在resources下新建log4j.properties，配置输出日志
+
+        ### 设置###
+        log4j.rootLogger = debug,D,E
+
+        ### 输出信息到控制抬 ###
+
+        log4j.appender.stdout = org.apache.log4j.ConsoleAppender
+        log4j.appender.stdout.Target = System.out
+        log4j.appender.stdout.layout = org.apache.log4j.PatternLayout
+        log4j.appender.stdout.layout.ConversionPattern = [%-5p] %d{yyyy-MM-dd HH:mm:ss,SSS} method:%l%n%m%n
+
+        ### 输出DEBUG 级别以上的日志到=E://logs/error.log ###
+        log4j.appender.D = org.apache.log4j.DailyRollingFileAppender
+        log4j.appender.D.File = d://logs/log.log
+        log4j.appender.D.Append = true
+        log4j.appender.D.Threshold = DEBUG
+        log4j.appender.D.layout = org.apache.log4j.PatternLayout
+        log4j.appender.D.layout.ConversionPattern = %-d{yyyy-MM-dd HH:mm:ss}  [ %t:%r ] - [ %p ]  %m%n
+
+        ### 输出ERROR 级别以上的日志到=E://logs/error.log ###
+        log4j.appender.E = org.apache.log4j.DailyRollingFileAppender
+        log4j.appender.E.File =d://logs/error.log
+        log4j.appender.E.Append = true
+        log4j.appender.E.Threshold = ERROR
+        log4j.appender.E.layout = org.apache.log4j.PatternLayout
+        log4j.appender.E.layout.ConversionPattern = %-d{yyyy-MM-dd HH:mm:ss}  [ %t:%r ] - [ %p ]  %m%n
+
+在resources/models下新建User.xml,配置SQL语句
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatis.dao.IUser">
+    <select id="getUser" parameterType="int" resultType="com.mybatis.models.User">
+        SELECT * FROM reg_us WHERE id = #{userId}
+    </select>
+    <insert id="insertUser" parameterType="User" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO reg_us(name,qq,subject,admission_at,GRAD_FM,OL_id,report,ideal,counsellor,channel,create_at,update_at) VALUES(#{name}, #{qq}, #{subject}, #{admission_at}, #{GRAD_FM}, #{OL_id}, #{report}, #{ideal}, #{counsellor}, #{channel}, #{create_at}, #{update_at})
+    </insert>
+    <select id="getUserList" resultType="com.mybatis.models.User">
+        SELECT * FROM reg_us
+    </select>
+    <update id="updateUser" parameterType="User">
+        UPDATE reg_us SET name = #{name},
+                          qq = #{qq},
+                          subject = #{subject},
+                          admission_at = #{admission_at},
+                          GRAD_FM = #{GRAD_FM},
+                          OL_id = #{OL_id},
+                          report = #{report},
+                          ideal = #{ideal},
+                          counsellor = #{counsellor},
+                          channel = #{channel},
+                          create_at = #{create_at},
+                          update_at = #{update_at}
+        WHERE id = #{id}
+    </update>
+    <delete id="deleteUser" parameterType="int">
+        DELETE FROM reg_us WHERE id = #{id}
+    </delete>
+</mapper>
+
+新建对应数据表的实体类
+
+package com.mybatis.models;
+
+public class User {
+        private Integer id;
+        private String name;
+        private Integer qq;
+        private String subject;
+        private long admission_at;
+        private String GRAD_FM;
+        private Integer OL_id;
+        private String report;
+        private String ideal;
+        private String counsellor;
+        private String channel;
+        private long create_at;
+        private long update_at;
+
+
+        public void setId(Integer id) {
+        this.id = id;
+        }
+
+        public Integer getId() {
+        return id;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+        return name;
+        }
+
+        public void setQq(Integer qq) {
+                this.qq = qq;
+        }
+
+        public Integer getQq() {
+                return qq;
+        }
+
+        public void setSubject(String subject) {
+                this.subject = subject;
+        }
+
+        public String getSubject() {
+                return subject;
+        }
+
+        public void setAdmission_at(long admission_at){
+                this.admission_at = admission_at;
+        }
+
+        public long getAdmission_at() {
+                return admission_at;
+        }
+
+        public void setGRAD_FM(String GRAD_FM) {
+                this.GRAD_FM = GRAD_FM;
+        }
+
+        public String getGRAD_FM() {
+                return GRAD_FM;
+        }
+
+        public Integer getOL_id() {
+                return OL_id;
+        }
+
+        public void setOL_id(Integer OL_id) {
+                this.OL_id = OL_id;
+        }
+
+        public String getReport() {
+                return report;
+        }
+
+        public void setReport(String report) {
+                this.report = report;
+        }
+
+        public String getIdeal() {
+                return ideal;
+        }
+
+        public void setIdeal(String ideal) {
+                this.ideal = ideal;
+        }
+
+        public String getCounsellor() {
+                return counsellor;
+        }
+
+        public void setCounsellor(String counsellor) {
+                this.counsellor = counsellor;
+        }
+
+        public String getChannel() {
+                return channel;
+        }
+
+        public void setChannel(String channel) {
+                this.channel = channel;
+        }
+
+        public long getCreate_at() {
+                return create_at;
+        }
+
+        public void setCreate_at(long create_at) {
+                this.create_at = create_at;
+        }
+
+        public long getUpdate_at() {
+                return update_at;
+        }
+
+        public void setUpdate_at(long update_at) {
+                this.update_at = update_at;
+        }
+}
+
+DAO层
+
+package com.mybatis.dao;
+
+import com.mybatis.models.User;
+
+import java.util.List;
+
+
+public interface IUser {
+
+    public List<User> getUserList();
+
+    public void insertUser(User user);
+
+    public void updateUser(User user);
+
+    public void deleteUser(int userId);
+
+    public User getUser(int id);
+}
+
+编写测试类
+
+import java.io.Reader;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import org.junit.Test;
+
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
+import com.mybatis.dao.IUser;
+import com.mybatis.models.User;
+
+public class Q1test {
+    private static SqlSessionFactory sqlSessionFactory;
+    private static Reader reader;
+
+    static {
+        try {
+            reader = Resources.getResourceAsReader("Configure.xml");
+            sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static SqlSessionFactory getSession() {
+        return sqlSessionFactory;
+    }
+
+
+
+    @Test
+    public void testInsert()
+    {
+        try
+        {
+
+            SqlSession session = sqlSessionFactory.openSession();
+
+            IUser userMapper = session.getMapper(IUser.class);
+            System.out.println("增加一个王五");
+
+            User user = new User();
+            user.setName("王五");
+            user.setCreate_at(System.currentTimeMillis());
+            userMapper.insertUser(user);
+            // 提交事务
+            session.commit();
+
+            // 显示插入之后User信息
+
+            System.out.println("增加成功...");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    // 获取用户列表
+    public void getUserList() {
+        try {
+            SqlSession session = sqlSessionFactory.openSession();
+            IUser iuser = session.getMapper(IUser.class);
+            // 显示User信息
+            System.out.println("测试查询");
+            printUsers(iuser.getUserList());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void testUpdate()
+    {
+        try
+        {
+            SqlSession session = sqlSessionFactory.openSession();
+            IUser iuser = session.getMapper(IUser.class);
+            System.out.println("测试更改改名张三");
+            printUsers(iuser.getUserList());
+            // 执行更新
+            User user = iuser.getUser(47);
+            user.setName("张三");
+            user.setUpdate_at(System.currentTimeMillis());
+
+            iuser.updateUser(user);
+            // 提交事务
+            session.commit();
+            // 显示更新之后User信息
+            System.out.println("显示更新");
+            printUsers(iuser.getUserList());
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    // 删除用户信息
+    public void testDelete()
+    {
+        try
+        {
+            SqlSession session = sqlSessionFactory.openSession();
+            IUser iuser = session.getMapper(IUser.class);
+            System.out.println("测试删除");
+            // 显示删除之前User信息
+            printUsers(iuser.getUserList());
+            // 执行删除
+            iuser.deleteUser(48);
+            // 提交事务
+            session.commit();
+            // 显示删除之后User信息
+            printUsers(iuser.getUserList());
+            System.out.println("显示删除后的列表");
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private void printUsers(final List<User> users) {
+        int count = 0;
+
+        for (User user : users) {
+            //数据库时间戳转成日期,先定义时间格式
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            // 时间戳转换成时间
+            String Create = sdf.format(new Date(Long.parseLong(String.valueOf(user.getCreate_at()))));
+
+            System.out.println(MessageFormat.format(
+                    "============= User[{0}]=================", ++count));
+            System.out.print("User Id: " + user.getId());
+            System.out.print(" User Name: " + user.getName());
+            System.out.println(" 创建时间: " + Create);
+        }
+    }
+}
