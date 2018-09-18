@@ -1,4 +1,4 @@
-pom.xmlÏÂÌí¼ÓÒÀÀµ
+pom.xmlä¸‹æ·»åŠ ä¾èµ–
 
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -16,19 +16,19 @@ pom.xmlÏÂÌí¼ÓÒÀÀµ
             <artifactId>mybatis</artifactId>
             <version>3.3.0</version>
         </dependency>
-        <!-- mysqlÇı¶¯°ü -->
+        <!-- mysqlé©±åŠ¨åŒ… -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.12</version>
         </dependency>
-        <!-- junit²âÊÔ°ü -->
+        <!-- junitæµ‹è¯•åŒ… -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
         </dependency>
-        <!--ÈÕÖ¾°ü-->
+        <!--æ—¥å¿—åŒ…-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
@@ -44,13 +44,13 @@ pom.xmlÏÂÌí¼ÓÒÀÀµ
                 <configuration>
                     <includes>
 
-                        <include>**/*test*.java</include>   <!-- Á½¸öĞÇºÅ**ÓÃÀ´Æ¥ÅäÈÎÒâÂ·¾¶£¬Ò»¸öĞÇºÅ*ÓÃÀ´»ñÈ¡³ıÂ·¾¶·ç¸ñ·ûÍâµÄ0¸ö»ò¶à¸ö×Ö·û -->
+                        <include>**/*test*.java</include>   <!-- ä¸¤ä¸ªæ˜Ÿå·**ç”¨æ¥åŒ¹é…ä»»æ„è·¯å¾„ï¼Œä¸€ä¸ªæ˜Ÿå·*ç”¨æ¥è·å–é™¤è·¯å¾„é£æ ¼ç¬¦å¤–çš„0ä¸ªæˆ–å¤šä¸ªå­—ç¬¦ -->
                     </includes>
-                    <excludes>     <!-- ÅÅ³ı -->
+                    <excludes>     <!-- æ’é™¤ -->
                         <exclude>**/123TestCase.java</exclude>
                     </excludes>
-                    <skip>false</skip>  <!-- ÂÔ¹ıµ¥Ôª²âÊÔ -->
-                    <testFailureIgnore>true</testFailureIgnore> <!-- µ±Maven Óöµ½Ò»¸ö²âÊÔÊ§°Ü£¬ËüÄ¬ÈÏµÄĞĞÎªÊÇÍ£Ö¹µ±Ç°µÄ¹¹½¨¡£ Èç¹ûÄãÏ£Íû¼ÌĞø¹¹½¨ÏîÄ¿£¬¼´Ê¹ Surefire ²å¼şÓöµ½ÁËÊ§°ÜµÄµ¥Ôª²âÊÔ£¬Äã¾ÍĞèÒªÉèÖÃ Surefire µÄtestFailureIgnore Õâ¸öÅäÖÃÊôĞÔÎª true -->
+                    <skip>false</skip>  <!-- ç•¥è¿‡å•å…ƒæµ‹è¯• -->
+                    <testFailureIgnore>true</testFailureIgnore> <!-- å½“Maven é‡åˆ°ä¸€ä¸ªæµ‹è¯•å¤±è´¥ï¼Œå®ƒé»˜è®¤çš„è¡Œä¸ºæ˜¯åœæ­¢å½“å‰çš„æ„å»ºã€‚ å¦‚æœä½ å¸Œæœ›ç»§ç»­æ„å»ºé¡¹ç›®ï¼Œå³ä½¿ Surefire æ’ä»¶é‡åˆ°äº†å¤±è´¥çš„å•å…ƒæµ‹è¯•ï¼Œä½ å°±éœ€è¦è®¾ç½® Surefire çš„testFailureIgnore è¿™ä¸ªé…ç½®å±æ€§ä¸º true -->
                 </configuration>
             </plugin>
         </plugins>
@@ -59,7 +59,7 @@ pom.xmlÏÂÌí¼ÓÒÀÀµ
 
 
 
-ÔÚresourcesÏÂĞÂ½¨Configure.xml£¬ÅäÖÃÊı¾İ¿âÁ´½Ó²¢Ó³ÉäUser.xml
+åœ¨resourcesä¸‹æ–°å»ºConfigure.xmlï¼Œé…ç½®æ•°æ®åº“é“¾æ¥å¹¶æ˜ å°„User.xml
 
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
@@ -73,9 +73,9 @@ pom.xmlÏÂÌí¼ÓÒÀÀµ
             <transactionManager type="JDBC" />
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.cj.jdbc.Driver" />
-                <property name="url" value="jdbc:mysql://132.232.179.230:3306/User?useSSL=false&amp;serverTimezone=UTC" />
+                <property name="url" value="jdbc:mysql://****:3306/User?useSSL=false&amp;serverTimezone=UTC" />
                 <property name="username" value="root" />
-                <property name="password" value="Wjp@1234" />
+                <property name="password" value="****" />
             </dataSource>
         </environment>
     </environments>
@@ -86,19 +86,19 @@ pom.xmlÏÂÌí¼ÓÒÀÀµ
 
 </configuration>
 
-ÔÚresourcesÏÂĞÂ½¨log4j.properties£¬ÅäÖÃÊä³öÈÕÖ¾
+åœ¨resourcesä¸‹æ–°å»ºlog4j.propertiesï¼Œé…ç½®è¾“å‡ºæ—¥å¿—
 
-        ### ÉèÖÃ###
+        ### è®¾ç½®###
         log4j.rootLogger = debug,D,E
 
-        ### Êä³öĞÅÏ¢µ½¿ØÖÆÌ§ ###
+        ### è¾“å‡ºä¿¡æ¯åˆ°æ§åˆ¶æŠ¬ ###
 
         log4j.appender.stdout = org.apache.log4j.ConsoleAppender
         log4j.appender.stdout.Target = System.out
         log4j.appender.stdout.layout = org.apache.log4j.PatternLayout
         log4j.appender.stdout.layout.ConversionPattern = [%-5p] %d{yyyy-MM-dd HH:mm:ss,SSS} method:%l%n%m%n
 
-        ### Êä³öDEBUG ¼¶±ğÒÔÉÏµÄÈÕÖ¾µ½=E://logs/error.log ###
+        ### è¾“å‡ºDEBUG çº§åˆ«ä»¥ä¸Šçš„æ—¥å¿—åˆ°=E://logs/error.log ###
         log4j.appender.D = org.apache.log4j.DailyRollingFileAppender
         log4j.appender.D.File = d://logs/log.log
         log4j.appender.D.Append = true
@@ -106,7 +106,7 @@ pom.xmlÏÂÌí¼ÓÒÀÀµ
         log4j.appender.D.layout = org.apache.log4j.PatternLayout
         log4j.appender.D.layout.ConversionPattern = %-d{yyyy-MM-dd HH:mm:ss}  [ %t:%r ] - [ %p ]  %m%n
 
-        ### Êä³öERROR ¼¶±ğÒÔÉÏµÄÈÕÖ¾µ½=E://logs/error.log ###
+        ### è¾“å‡ºERROR çº§åˆ«ä»¥ä¸Šçš„æ—¥å¿—åˆ°=E://logs/error.log ###
         log4j.appender.E = org.apache.log4j.DailyRollingFileAppender
         log4j.appender.E.File =d://logs/error.log
         log4j.appender.E.Append = true
@@ -114,7 +114,7 @@ pom.xmlÏÂÌí¼ÓÒÀÀµ
         log4j.appender.E.layout = org.apache.log4j.PatternLayout
         log4j.appender.E.layout.ConversionPattern = %-d{yyyy-MM-dd HH:mm:ss}  [ %t:%r ] - [ %p ]  %m%n
 
-ÔÚresources/modelsÏÂĞÂ½¨User.xml,ÅäÖÃSQLÓï¾ä
+åœ¨resources/modelsä¸‹æ–°å»ºUser.xml,é…ç½®SQLè¯­å¥
 
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
@@ -151,7 +151,7 @@ pom.xmlÏÂÌí¼ÓÒÀÀµ
     </delete>
 </mapper>
 
-ĞÂ½¨¶ÔÓ¦Êı¾İ±íµÄÊµÌåÀà
+æ–°å»ºå¯¹åº”æ•°æ®è¡¨çš„å®ä½“ç±»
 
 package com.mybatis.models;
 
@@ -276,7 +276,7 @@ public class User {
         }
 }
 
-DAO²ã
+DAOå±‚
 
 package com.mybatis.dao;
 
@@ -298,7 +298,7 @@ public interface IUser {
     public User getUser(int id);
 }
 
-±àĞ´²âÊÔÀà
+ç¼–å†™æµ‹è¯•ç±»
 
 import java.io.Reader;
 import java.text.MessageFormat;
@@ -342,18 +342,18 @@ public class Q1test {
             SqlSession session = sqlSessionFactory.openSession();
 
             IUser userMapper = session.getMapper(IUser.class);
-            System.out.println("Ôö¼ÓÒ»¸öÍõÎå");
+            System.out.println("å¢åŠ ä¸€ä¸ªç‹äº”");
 
             User user = new User();
-            user.setName("ÍõÎå");
+            user.setName("ç‹äº”");
             user.setCreate_at(System.currentTimeMillis());
             userMapper.insertUser(user);
-            // Ìá½»ÊÂÎñ
+            // æäº¤äº‹åŠ¡
             session.commit();
 
-            // ÏÔÊ¾²åÈëÖ®ºóUserĞÅÏ¢
+            // æ˜¾ç¤ºæ’å…¥ä¹‹åUserä¿¡æ¯
 
-            System.out.println("Ôö¼Ó³É¹¦...");
+            System.out.println("å¢åŠ æˆåŠŸ...");
         }
         catch (Exception e)
         {
@@ -361,13 +361,13 @@ public class Q1test {
         }
     }
     @Test
-    // »ñÈ¡ÓÃ»§ÁĞ±í
+    // è·å–ç”¨æˆ·åˆ—è¡¨
     public void getUserList() {
         try {
             SqlSession session = sqlSessionFactory.openSession();
             IUser iuser = session.getMapper(IUser.class);
-            // ÏÔÊ¾UserĞÅÏ¢
-            System.out.println("²âÊÔ²éÑ¯");
+            // æ˜¾ç¤ºUserä¿¡æ¯
+            System.out.println("æµ‹è¯•æŸ¥è¯¢");
             printUsers(iuser.getUserList());
         } catch (Exception e) {
             e.printStackTrace();
@@ -380,18 +380,18 @@ public class Q1test {
         {
             SqlSession session = sqlSessionFactory.openSession();
             IUser iuser = session.getMapper(IUser.class);
-            System.out.println("²âÊÔ¸ü¸Ä¸ÄÃûÕÅÈı");
+            System.out.println("æµ‹è¯•æ›´æ”¹æ”¹åå¼ ä¸‰");
             printUsers(iuser.getUserList());
-            // Ö´ĞĞ¸üĞÂ
+            // æ‰§è¡Œæ›´æ–°
             User user = iuser.getUser(47);
-            user.setName("ÕÅÈı");
+            user.setName("å¼ ä¸‰");
             user.setUpdate_at(System.currentTimeMillis());
 
             iuser.updateUser(user);
-            // Ìá½»ÊÂÎñ
+            // æäº¤äº‹åŠ¡
             session.commit();
-            // ÏÔÊ¾¸üĞÂÖ®ºóUserĞÅÏ¢
-            System.out.println("ÏÔÊ¾¸üĞÂ");
+            // æ˜¾ç¤ºæ›´æ–°ä¹‹åUserä¿¡æ¯
+            System.out.println("æ˜¾ç¤ºæ›´æ–°");
             printUsers(iuser.getUserList());
         }catch (Exception e)
         {
@@ -399,23 +399,23 @@ public class Q1test {
         }
     }
     @Test
-    // É¾³ıÓÃ»§ĞÅÏ¢
+    // åˆ é™¤ç”¨æˆ·ä¿¡æ¯
     public void testDelete()
     {
         try
         {
             SqlSession session = sqlSessionFactory.openSession();
             IUser iuser = session.getMapper(IUser.class);
-            System.out.println("²âÊÔÉ¾³ı");
-            // ÏÔÊ¾É¾³ıÖ®Ç°UserĞÅÏ¢
+            System.out.println("æµ‹è¯•åˆ é™¤");
+            // æ˜¾ç¤ºåˆ é™¤ä¹‹å‰Userä¿¡æ¯
             printUsers(iuser.getUserList());
-            // Ö´ĞĞÉ¾³ı
+            // æ‰§è¡Œåˆ é™¤
             iuser.deleteUser(48);
-            // Ìá½»ÊÂÎñ
+            // æäº¤äº‹åŠ¡
             session.commit();
-            // ÏÔÊ¾É¾³ıÖ®ºóUserĞÅÏ¢
+            // æ˜¾ç¤ºåˆ é™¤ä¹‹åUserä¿¡æ¯
             printUsers(iuser.getUserList());
-            System.out.println("ÏÔÊ¾É¾³ıºóµÄÁĞ±í");
+            System.out.println("æ˜¾ç¤ºåˆ é™¤åçš„åˆ—è¡¨");
         }catch (Exception e)
         {
             e.printStackTrace();
@@ -426,16 +426,16 @@ public class Q1test {
         int count = 0;
 
         for (User user : users) {
-            //Êı¾İ¿âÊ±¼ä´Á×ª³ÉÈÕÆÚ,ÏÈ¶¨ÒåÊ±¼ä¸ñÊ½
+            //æ•°æ®åº“æ—¶é—´æˆ³è½¬æˆæ—¥æœŸ,å…ˆå®šä¹‰æ—¶é—´æ ¼å¼
             SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            // Ê±¼ä´Á×ª»»³ÉÊ±¼ä
+            // æ—¶é—´æˆ³è½¬æ¢æˆæ—¶é—´
             String Create = sdf.format(new Date(Long.parseLong(String.valueOf(user.getCreate_at()))));
 
             System.out.println(MessageFormat.format(
                     "============= User[{0}]=================", ++count));
             System.out.print("User Id: " + user.getId());
             System.out.print(" User Name: " + user.getName());
-            System.out.println(" ´´½¨Ê±¼ä: " + Create);
+            System.out.println(" åˆ›å»ºæ—¶é—´: " + Create);
         }
     }
 }
