@@ -1,0 +1,244 @@
+pom.xml 文件添加依赖
+
+    <dependencies>
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.11</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>8.0.12</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-jdbc</artifactId>
+        <version>4.3.8.RELEASE</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>4.3.8.RELEASE</version>
+    </dependency>
+    </dependencies>
+</project>
+
+在resources中新建 application-beans.xml，提供数据库连接
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd ">
+
+
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/test?useSSL=false&amp;serverTimezone=UTC" />
+        <property name="username" value="root" />
+        <property name="password" value="root" />
+    </bean>
+
+
+    <bean id="studentJDBCTemplate" class="com.dao.impl.StudentJDBCTemplate">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+</beans>
+
+对应的数据库表的实体类
+
+package com.pojo;
+
+public class Student {
+    private Integer age;
+    private String name;
+    private Integer id;
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+}
+
+DAO层接口
+package com.dao;
+
+import com.pojo.Student;
+
+import java.util.List;
+import javax.sql.DataSource;
+
+public interface StudentDAO {
+
+    public void setDataSource(DataSource ds);
+
+    public void create(String name, Integer age);
+
+
+    public List<Student> listStudents();
+
+    public Student findByid(Integer id);
+
+}
+
+DAO层的实现层
+package com.dao.impl;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.List;
+import javax.sql.DataSource;
+
+import com.dao.StudentDAO;
+import com.pojo.Student;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
+
+public class StudentJDBCTemplate  implements StudentDAO {
+    private DataSource dataSource;
+    private JdbcTemplate jdbcTemplateObject;
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+        this.jdbcTemplateObject = new JdbcTemplate(dataSource);
+    }
+
+    public void create(String name, Integer age) {
+        String SQL = "insert into Student (name, age) values (?, ?)";
+
+        jdbcTemplateObject.update(SQL, name, age);
+        System.out.println("添加成功 Name = " + name + " Age = " + age);
+        return;
+    }
+
+    public void update(Integer id,String name,Integer age){
+        String SQL = "update Student set name =?,age=? where id=?";
+        jdbcTemplateObject.update(SQL,name,age,id);
+        System.out.println("更改成功 ID = "+id+" Name = "+name+" Age = "+age);
+        return;
+    }
+
+    public void delete(Integer id){
+        String SQL = "delete from student where id = ?";
+        jdbcTemplateObject.update(SQL,id);
+        System.out.println("删除成功 ID = "+id);
+        return;
+    }
+
+
+
+    public List<Student> listStudents() {
+        String SQL = "select * from Student";
+        List<Student> students = jdbcTemplateObject.query(SQL, new StudentMapper());
+        return students;
+    }
+
+
+    public Student findByid(final Integer id){
+        String SQL ="select * from Student WHERE id=?";
+        List<Student> students = jdbcTemplateObject.query(SQL, new PreparedStatementSetter() {
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                preparedStatement.setInt(1,id);
+            }
+        },new StudentMapper());
+        return students.get(0);
+    }
+
+}
+
+定义内部类实现RowMapper接口，用于取整张表。
+package com.dao.impl;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import com.pojo.Student;
+import org.springframework.jdbc.core.RowMapper;
+
+public class StudentMapper implements RowMapper<Student> {
+    public Student mapRow(ResultSet rs, int rowNum) throws SQLException {
+        Student student = new Student();
+        student.setId(rs.getInt("id"));
+        student.setName(rs.getString("name"));
+        student.setAge(rs.getInt("age"));
+        return student;
+    }
+}
+
+编写TEST
+package test;
+import org.junit.Test;
+import com.dao.impl.StudentJDBCTemplate;
+import com.pojo.Student;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.util.List;
+
+public class test {
+    ApplicationContext context =
+            new ClassPathXmlApplicationContext("application-beans.xml");
+
+    StudentJDBCTemplate studentJDBCTemplate =
+            (StudentJDBCTemplate)context.getBean("studentJDBCTemplate");
+
+
+    @Test
+    public void test1 (){
+        System.out.println("------测试增加--------" );
+        studentJDBCTemplate.create("Maxsu", 19);
+        studentJDBCTemplate.create("Minsu", 23);
+        studentJDBCTemplate.create("Allen", 27);
+    }
+    @Test
+    public void test2 (){
+        System.out.println("------测试ID查找--------" );
+        Student students = studentJDBCTemplate.findByid(3);
+        System.out.print("id: "+students.getId());
+        System.out.print(" name: "+students.getName());
+        System.out.println(" age: "+students.getAge());
+    }
+    @Test
+    public void test3 (){
+        System.out.println("------测试列出所所有--------");
+        List<Student> students = studentJDBCTemplate.listStudents();
+        for (Student record : students) {
+            System.out.print("ID : " + record.getId());
+            System.out.print(", Name : " + record.getName());
+            System.out.println(", Age : " + record.getAge());
+
+        }
+    }
+    @Test
+    public void test4 (){
+        System.out.println("------测试更改--------" );
+        studentJDBCTemplate.update(1,"张三", 19);
+    }
+    @Test
+    public void test5 (){
+        System.out.println("------测试删除--------" );
+        studentJDBCTemplate.delete(1);
+    }
+}
