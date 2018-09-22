@@ -1,61 +1,133 @@
-import org.junit.*;
 import java.sql.*;
-import java.util.*;
+import java.util.Date;
 
 
-public class test{
+public class test extends Thread{
+    String han = "\u7684\u4e00\u4e86\u662f\u6211\u4e0d\u5728\u4eba\u4eec\u6709\u6765\u4ed6\u8fd9\u4e0a\u7740\u4e2a\u5730\u5230\u5927\u91cc\u8bf4\u5c31\u53bb\u5b50\u5f97\u4e5f\u548c\u90a3\u8981\u4e0b\u770b\u5929\u65f6\u8fc7\u51fa\u5c0f\u4e48\u8d77\u4f60\u90fd\u628a\u597d\u8fd8\u591a\u6ca1\u4e3a\u53c8\u53ef\u5bb6\u5b66\u53ea\u4ee5\u4e3b\u4f1a\u6837\u5e74\u60f3\u751f\u540c\u8001\u4e2d\u5341\u4ece\u81ea\u9762\u524d\u5934\u9053\u5b83\u540e\u7136\u8d70\u5f88\u50cf\u89c1\u4e24\u7528\u5979\u56fd\u52a8\u8fdb\u6210\u56de\u4ec0\u8fb9\u4f5c\u5bf9\u5f00\u800c\u5df1\u4e9b\u73b0\u5c71\u6c11\u5019\u7ecf\u53d1\u5de5\u5411\u4e8b\u547d\u7ed9\u957f\u6c34\u51e0\u4e49\u4e09\u58f0\u4e8e\u9ad8\u624b\u77e5\u7406\u773c\u5fd7\u70b9\u5fc3\u6218\u4e8c\u95ee\u4f46\u8eab\u65b9\u5b9e\u5403\u505a\u53eb\u5f53\u4f4f\u542c\u9769\u6253\u5462\u771f\u5168\u624d\u56db\u5df2\u6240\u654c";
 
 
-private String url = "jdbc:mysql://localhost:3306/sd?useSSL=false&serverTimezone=UTC";
-private String user = "root";
-private String password = "root";
-@Test
+    public static String base = "abcdefghijklmnopqrstuvwxyz0123456789";
+    private static String firstName="赵钱孙李周吴郑王冯陈褚卫蒋沈韩杨朱秦尤许何吕施张孔曹严华金魏陶姜戚谢邹喻柏水窦章云苏潘葛奚范彭郎鲁韦昌马苗凤花方俞任袁柳酆鲍史唐费廉岑薛雷贺倪汤滕殷罗毕郝邬安常乐于时傅皮卞齐康伍余元卜顾孟平黄和穆萧尹姚邵湛汪祁毛禹狄米贝明臧计伏成戴谈宋茅庞熊纪舒屈项祝董梁杜阮蓝闵席季麻强贾路娄危江童颜郭梅盛林刁钟徐邱骆高夏蔡田樊胡凌霍虞万支柯咎管卢莫经房裘缪干解应宗宣丁贲邓郁单杭洪包诸左石崔吉钮龚程嵇邢滑裴陆荣翁荀羊於惠甄魏加封芮羿储靳汲邴糜松井段富巫乌焦巴弓牧隗山谷车侯宓蓬全郗班仰秋仲伊宫宁仇栾暴甘钭厉戎祖武符刘姜詹束龙叶幸司韶郜黎蓟薄印宿白怀蒲台从鄂索咸籍赖卓蔺屠蒙池乔阴郁胥能苍双闻莘党翟谭贡劳逄姬申扶堵冉宰郦雍却璩桑桂濮牛寿通边扈燕冀郏浦尚农温别庄晏柴瞿阎充慕连茹习宦艾鱼容向古易慎戈廖庚终暨居衡步都耿满弘匡国文寇广禄阙东殴殳沃利蔚越夔隆师巩厍聂晁勾敖融冷訾辛阚那简饶空曾毋沙乜养鞠须丰巢关蒯相查后江红游竺权逯盖益桓公万俟司马上官欧阳夏侯诸葛闻人东方赫连皇甫尉迟公羊澹台公冶宗政濮阳淳于仲孙太叔申屠公孙乐正轩辕令狐钟离闾丘长孙慕容鲜于宇文司徒司空亓官司寇仉督子车颛孙端木巫马公西漆雕乐正壤驷公良拓拔夹谷宰父谷粱晋楚阎法汝鄢涂钦段干百里东郭南门呼延归海羊舌微生岳帅缑亢况后有琴梁丘左丘东门西门商牟佘佴伯赏南宫墨哈谯笪年爱阳佟第五言福百家姓续";
+    private static String girl="秀娟英华慧巧美娜静淑惠珠翠雅芝玉萍红娥玲芬芳燕彩春菊兰凤洁梅琳素云莲真环雪荣爱妹霞香月莺媛艳瑞凡佳嘉琼勤珍贞莉桂娣叶璧璐娅琦晶妍茜秋珊莎锦黛青倩婷姣婉娴瑾颖露瑶怡婵雁蓓纨仪荷丹蓉眉君琴蕊薇菁梦岚苑婕馨瑗琰韵融园艺咏卿聪澜纯毓悦昭冰爽琬茗羽希宁欣飘育滢馥筠柔竹霭凝晓欢霄枫芸菲寒伊亚宜可姬舒影荔枝思丽 ";
+    private static String boy="伟刚勇毅俊峰强军平保东文辉力明永健世广志义兴良海山仁波宁贵福生龙元全国胜学祥才发武新利清飞彬富顺信子杰涛昌成康星光天达安岩中茂进林有坚和彪博诚先敬震振壮会思群豪心邦承乐绍功松善厚庆磊民友裕河哲江超浩亮政谦亨奇固之轮翰朗伯宏言若鸣朋斌梁栋维启克伦翔旭鹏泽晨辰士以建家致树炎德行时泰盛雄琛钧冠策腾楠榕风航弘";
+    private static String[] subject="WEB,java,PM,QA,Android,iOS,OP,UI,运营".split(",");
 
-public void Test(){
-        Connection conn = null;
-        PreparedStatement pstm =null;
-        ResultSet rt = null;
-        try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection(url, user, password);
-        String sql = "INSERT INTO userinfo(uname) VALUES(CONCAT('姓名',?))";
-                pstm = conn.prepareStatement(sql);
-                conn.setAutoCommit(false);
-                Long startTime = System.currentTimeMillis();
-                Random rand = new Random();
-                int a,b,c,d;
-                for (int i = 1; i <= 1000000; i++) {
-                        pstm.setInt(1, i);
-                        pstm.addBatch();
-                if(i%100000==0){
-                        pstm.executeBatch();
-                        conn.commit();
-                        pstm.clearBatch();
-                }
-                }
+    public static int getNum(int start,int end) {
+        return (int)(Math.random()*(end-start+1)+start);
+    }
 
-                Long endTime = System.currentTimeMillis();
-                System.out.println("OK,用时：" + (endTime - startTime));
-        } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
-        }finally{
-                if(pstm!=null){
-                        try {
-                                pstm.close();
-                        } catch (SQLException e) {
-                                e.printStackTrace();
-                                throw new RuntimeException(e);
-                        }
-                }
-                if(conn!=null){
-                        try {
-                                conn.close();
-                        } catch (SQLException e) {
-                                e.printStackTrace();
-                                throw new RuntimeException(e);
-                                }
-                        }
-                }
+    /**
+     * 返回QQ
+     */
+    private static String getQQ() {
+        String QQ=String.valueOf(getNum(1,9999999)+10000000).substring(1);
+        return QQ;
+    }
+
+    /**
+     * 返回中文姓名
+     */
+    private static String name_sex = "";
+    private static String getChineseName() {
+        int index=getNum(0, firstName.length()-1);
+        String first=firstName.substring(index, index+1);
+        int sex=getNum(0,1);
+        String str=boy;
+        int length=boy.length();
+        if(sex==0){
+            str=girl;
+            length=girl.length();
+            name_sex = "女";
+        }else {
+            name_sex="男";
         }
+        index=getNum(0,length-1);
+        String second=str.substring(index, index+1);
+        int hasThird=getNum(0,1);
+        String third="";
+        if(hasThird==1){
+            index=getNum(0,length-1);
+            third=str.substring(index, index+1);
+        }
+        return first+second+third;
+    }
+
+    /**
+     * 返回科目
+     */
+    private static String getSubject() {
+        int index=getNum(0,subject.length-1);
+        String first=subject[index];
+        return first;
+    }
+
+
+
+    public void run() {
+        String url = "jdbc:mysql://localhost:3306/college?rewriteBatchedStatements=true&useSSL=false&serverTimezone=UTC";
+        String name = "com.mysql.cj.jdbc.Driver";
+        String user = "root";
+        String password = "root";
+        Connection conn = null;
+        try {
+            Class.forName(name);
+            conn = DriverManager.getConnection(url, user, password);//获取连接
+            conn.setAutoCommit(false);//关闭自动提交，不然conn.commit()运行到这句会报错
+        } catch (ClassNotFoundException e1) {
+            e1.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        // 开始时间
+        Long begin = new Date().getTime();
+        // sql前缀
+        String prefix = "INSERT INTO reg_us (name,qq,subject) VALUES ";
+        try {
+            // 保存sql后缀
+            StringBuffer suffix = new StringBuffer();
+            // 设置事务为非自动提交
+            conn.setAutoCommit(false);
+            // 比起st，pst会更好些
+            PreparedStatement  pst = (PreparedStatement) conn.prepareStatement(" ");
+            //准备执行语句
+            // 外层循环，总提交事务次数
+            for (int i = 1; i <= 200; i++) {
+                suffix = new StringBuffer();
+                // 第j次提交步长
+                for (int j = 1; j <= 100000; j++) {
+                    // 构建SQL后缀
+                    suffix.append("('" + getChineseName() +"','" + getQQ() +"','" + getSubject() +"'),");
+                }
+                // 构建完整SQL
+                String sql = prefix + suffix.substring(0, suffix.length() - 1);
+                // 添加执行SQL
+                pst.addBatch(sql);
+                // 执行操作
+                pst.executeBatch();
+                // 提交事务
+                conn.commit();
+                // 清空上一次添加的数据
+                suffix = new StringBuffer();
+            }
+            // 头等连接
+            pst.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        // 结束时间
+        Long end = new Date().getTime();
+        // 耗时
+        System.out.println("2亿条数据插入花费时间 : " + (end - begin) / 1000 + " s"+"  插入完成");
+    }
+}
+
+
+
+public class TestInsert {
+    public static void main(String[] args) {
+        for (int i = 1; i <=10; i++) {
+            new test().start();
+        }
+    }
 }
